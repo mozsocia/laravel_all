@@ -57,3 +57,27 @@ Based on available hosting benchmarks for similar setups (e.g., medium-scale web
   - **Database Setup**: If PostgreSQL is on the same t3.medium, expect bottlenecks from shared resources (further halving RPS). Using a separate RDS instance (e.g., db.t3.medium) helps but adds latency.
 
 For accurate numbers, run your own benchmarks using tools like ApacheBench, wrk, or Laravel's built-in profiling on t3.medium. Optimize with OPCache, query indexing, connection pooling (e.g., PgBouncer), and auto-scaling to approach the higher end of these estimates. If your app has specific workloads, provide more details for a refined comparison.
+
+
+
+compares to other popular frameworks in the same test (all with PostgreSQL, fullstack configuration, and full ORM unless noted):
+
+| Ranking | Language | Framework | RPS | Relative Ratio (to Laravel) |
+|---------|----------|-----------|-----|-----------------------------|
+| 1 | C# | ASP.NET | 609,966 | 36.3 |
+| 2 | Go | Fiber | 338,096 | 20.1 |
+| 3 | Rust | Actix | 320,144 | 19.1 |
+| 4 | Java | Spring | 243,639 | 14.5 |
+| 5 | JS/Node | Express | 78,136 | 4.7 |
+| 6 | Ruby | Rails | 42,546 | 2.5 |
+| 7 | Python | Django | 32,651 | 1.9 |
+| 8 | PHP | Laravel | 16,800 | 1.0 |
+
+Keep in mind:
+- These are peak numbers from optimized, community-submitted implementations on benchmark hardware (e.g., high-core-count servers with 10GbE networking). Real-world performance will vary based on your hardware, app complexity, optimization (e.g., using Gunicorn/UWSGI with multiple workers, caching, async features in Django 5+), network, and workload.
+- For lighter tests without DB (e.g., JSON serialization or plaintext), Django would handle significantly higher RPS—potentially 70,000+ based on older rounds, though exact Round 23 figures for those aren't readily available in summaries.
+- If your app is DB-heavy, expect RPS closer to the Fortunes range. Benchmark your specific setup for accurate expectations.
+
+
+
+
